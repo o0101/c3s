@@ -16,5 +16,8 @@
     "css-in-js"
   ],
   "author": "@dosy",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "jtype-system": "^1.0.4"
+  }
 }

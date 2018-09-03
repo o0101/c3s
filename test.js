@@ -1,18 +1,30 @@
 import c3s from './c3s.js';
-import {generateUniquePrefix} from './c3s.js';
+import {generateUniquePrefix, extendPrefix} from './c3s.js';
 
 const TRIALS = 10;
+
+let prefixes = [];
 
 testAll();
 
 function testAll() {
   testPrefix();
+  testExtendPrefix();
 }
 
 function testPrefix() {
   let trials = TRIALS;
   while(trials--) {
-    console.log(`Prefix ${generateUniquePrefix()}`);
+    let prefix = generateUniquePrefix();
+    console.log(`Prefix ${JSON.stringify(prefix)}`);
+    prefixes.push(prefix);
+  }
+}
+
+function testExtendPrefix() {
+  for( const p of prefixes ) {
+    extendPrefix(p);
+    console.log(`Extended prefix ${JSON.stringify(p)}`);
   }
 }
 
