@@ -1,0 +1,20 @@
+{
+  "name": "c3s",
+  "version": "1.0.0",
+  "description": "Scoped-styles, CSS-in-JS library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "serve -p 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//crislin2046/c3s"
+  },
+  "keywords": [
+    "@dosy",
+    "scoped-styles",
+    "css-in-js"
+  ],
+  "author": "@dosy",
+  "license": "MIT"
+}
