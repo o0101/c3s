@@ -37,6 +37,7 @@ export function extendPrefix({prefix:existingPrefix}) {
 }
 
 export function findStyleSheet(url) {
+  url = getURL(url);
   return [...document.styleSheets].find(({href}) => href == url);
 }
 
@@ -54,11 +55,13 @@ export function isStyleSheetAccessible(ss) {
 // which may both rely on and recause a network request
 export function cloneStyleSheet(ss) {
   const newNode = ss.ownerNode.cloneNode(true);
-  document.head.insertAdjacentElement(newNode,'beforeEnd');
+  document.head.insertAdjacentElement('beforeEnd', newNode);
+  ss.ownerNode.remove();
   return newNode;
 }
 
 export function addResetRules(ss) {
+  
   resetRules.forEach(rule => {
     ss.insertRule(rule);
   });
@@ -67,6 +70,7 @@ export function addResetRules(ss) {
 // combinator can also be empty string ALL rules are to apply to component container
 // but generally this is no. 
 export function prefixAllrules(ss, prefix, combinator = ' ') {
+  console.log(ss);
   [...ss.cssRules].forEach(rule => {
     const selectors = rule.selectorText.split(/,/g);
     const prefixedSelectors = selectors.map(sel => `${prefix}${combinator}${sel}`);
@@ -74,20 +78,20 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
   });
 }
 
-export function scopeStylesheet(url,prefix,combinator = ' ') {
+export function scopeStyleSheet(url,prefix,combinator = ' ') {
   const ss = findStyleSheet(url);
   if ( !isStyleSheetAccessible(ss) ) {
     throw new TypeError(`Only CORS stylesheets can be scoped, because cross-origin rules cannot be accessed.`);
   }
   const scopedSS = cloneStyleSheet(ss);
-  addResetRules(scopedSS);
-  prefixAllrules(scopedSS,prefix, combinator);
+  addResetRules(scopedSS.sheet);
+  prefixAllrules(scopedSS.sheet,prefix, combinator);
   return scopedSS;
 }
 
 export function scope(url) {
-  const prefix = '.' + generateUniquePrefix().prefix[0];
-  return {scopedSheet: scopeStyleSheet(url,prefix), prefix};
+  const prefix = generateUniquePrefix().prefix[0];
+  return {scopedSheet: scopeStyleSheet(url,'.' + prefix), prefix};
 }
 
 // used when the first scoping didn't work and we need to add more prefix to increase specificity
@@ -100,5 +104,8 @@ export function rescope({scopedSheet, prefix:existingPrefix}) {
   return {scopedSheet: scopedSS, prefix: prefix + existingPrefix};
 }
 
-
-
+export function getURL(uri) {
+  const link = document.createElement('a');
+  link.href = uri;
+  return link.href;
+}

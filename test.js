@@ -1,5 +1,5 @@
 import c3s from './c3s.js';
-import {generateUniquePrefix, extendPrefix} from './c3s.js';
+import {generateUniquePrefix, extendPrefix, scope} from './c3s.js';
 
 const TRIALS = 10;
 
@@ -10,6 +10,7 @@ testAll();
 function testAll() {
   testPrefix();
   testExtendPrefix();
+  testScope('crazy.css');
 }
 
 function testPrefix() {
@@ -26,5 +27,11 @@ function testExtendPrefix() {
     extendPrefix(p);
     console.log(`Extended prefix ${JSON.stringify(p)}`);
   }
+}
+
+function testScope(uri) {
+  const {prefix} = scope(uri);
+  const affectedElement = document.querySelector('.scoped-element');
+  affectedElement.classList.add(prefix);
 }
 
