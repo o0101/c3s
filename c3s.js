@@ -80,13 +80,19 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
       const {selectorText} = lastRule;
       const selectors = selectorText.split(/,/g);
       const modifiedSelectors = selectors.map(sel => {
-        // we also need to insert prefix BEFORE any pseudo selectors 
-          // NOTE: the following indexOf test will BREAK if selector contains a :
-          // such as [ns\\:name="scoped-name"]
-        const firstPseudoIndex = sel.indexOf(':');
-        if ( firstPseudoIndex > -1 ) {
-          const [pre, post] = [ sel.slice(0, firstPseudoIndex ), sel.slice(firstPseudoIndex) ];
-          return `${pre}${prefix}${post}, ${prefix} ${sel}`;
+        // we also need to insert prefix BEFORE any descendent combinators
+        const firstDescendentIndex = sel.indexOf(' ');
+        if ( firstDescendentIndex > -1 ) {
+          const firstSel = sel.slice(0, firstDescendentIndex);
+          const restSel = sel.slice(firstDescendentIndex);
+          // we also need to insert prefix BEFORE any pseudo selectors 
+            // NOTE: the following indexOf test will BREAK if selector contains a :
+            // such as [ns\\:name="scoped-name"]
+          const firstPseudoIndex = firstSel.indexOf(':');
+          if ( firstPseudoIndex > -1 ) {
+            const [pre, post] = [ firstSel.slice(0, firstPseudoIndex ), firstSel.slice(firstPseudoIndex) ];
+            return `${pre}${prefix}${post}${restSel}, ${prefix} ${sel}`;
+          } else return `$${firstSel}${prefix}${restSel}, ${prefix} ${sel}`;
         } else return `${sel}${prefix}, ${prefix} ${sel}`;
       });
       const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
