@@ -1,6 +1,6 @@
-# tape.css
+# maskingtape.css
 
-Block off where you want your styles to apply. Control the cascade.
+Block off where you want your styles to apply. Control the drips, er... I mean, the cascade.
 
 A CSS-in-JS template tag library inspired by emotion, styled-components and so on.
 
