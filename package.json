@@ -1,6 +1,6 @@
 {
   "name": "maskingtape.css",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Block off where you want your styles to go. Scoped-styles, control the cascade, CSS-in-JS library.",
   "main": "index.js",
   "scripts": {
