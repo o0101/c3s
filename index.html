@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <h1>C3S Test</h1>
 <link rel=stylesheet href=crazy.css>
+<link rel=stylesheet href=normalize.css>
 <script type=module src=test.js></script>
 <div class=none>
   <input type=text placeholder="unaffected by a scoped style...">
+  <button>Button</button>
 </div>
 <div class=scoped-element>
   <input class=scoped-element type=text placeholder="Affected by a scoped style!">
+  <button>Button</button>
 </div>
 <script type=module>
   import {scope} from './c3s.js';
