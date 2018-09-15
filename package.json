@@ -1,7 +1,7 @@
 {
-  "name": "c3s",
+  "name": "tape.css",
   "version": "1.0.0",
-  "description": "Scoped-styles, CSS-in-JS library.",
+  "description": "Block off where you want your styles to go. Scoped-styles, control the cascade, CSS-in-JS library.",
   "main": "index.js",
   "scripts": {
     "test": "serve -p 8080"

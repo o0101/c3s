@@ -1,16 +1,16 @@
-# c3s
+# tape.css
+
+Block off where you want your styles to apply. Control the cascade.
 
 A CSS-in-JS template tag library inspired by emotion, styled-components and so on.
 
-## Use with brutal
+## Usage
 
-```JavaScript
-R`<input type=text value=${value}
-  style=${c3s`
-    cursor: pointer;
-    background: lime;
-    font-weight: bold;
-  `}>`
+```shell
+$ npm install --save tape.css
 ```
-  
+
+Also, tape.css is included in [brutestrap](https://github.com/crislin2046/brutestrap).
+
+
   
