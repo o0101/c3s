@@ -5,7 +5,7 @@ const TRIALS = 10;
 
 let prefixes = [];
 
-testAll();
+//testAll();
 
 function testAll() {
   testPrefix();
