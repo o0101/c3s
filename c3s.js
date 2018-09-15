@@ -72,18 +72,31 @@ export function addResetRules(ss) {
 // combinator can also be empty string ALL rules are to apply to component container
 // but generally this is no. 
 export function prefixAllrules(ss, prefix, combinator = ' ') {
-  Array.from(ss.cssRules).forEach(rule => {
-    const selectors = rule.selectorText.split(/,/g);
-    const prefixedSelectors = selectors.map(sel => {
-        if ( combinator == '' ) {
-          // an empty combinator indicates we want it to apply to this level
-          // we append the class if we want it to apply to the
-          // selection and not the parent
-          return `${sel}${prefix}`;
-        } else return `${prefix}${combinator}${sel}`;
-    });
-    rule.selectorText = prefixedSelectors.join(', ');
-  });
+  const ruleCount = ss.cssRules.length - 1;
+  let i = ruleCount;
+
+  while(i >= 0) {
+    const lastRule = ss.cssRules[ruleCount];
+    let newRuleText = lastRule.cssText;
+    if ( lastRule.type == CSSRule.STYLE_RULE ) {
+      const {selectorText} = lastRule;
+      const selectors = selectorText.split(/,/g);
+      const modifiedSelectors = selectors.map(sel => {
+          if ( combinator == '' ) {
+            // an empty combinator indicates we want it to apply to this level
+            // we append the class if we want it to apply to the
+            // selection and not the parent
+            return `${sel}${prefix}`;
+          } else return `${prefix}${combinator}${sel}`;
+      });
+      const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
+      const newRuleSelectorText = modifiedSelectors.join(', ');
+      newRuleText = `${newRuleSelectorText} ${ruleBlock}`;
+    }
+    ss.removeRule(ruleCount);
+    ss.insertRule(newRuleText);
+    i--;
+  }
 }
 
 export function scopeStyleSheet(url,prefix,combinator = ' ') {
