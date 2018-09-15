@@ -73,7 +73,14 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
   console.log(ss);
   [...ss.cssRules].forEach(rule => {
     const selectors = rule.selectorText.split(/,/g);
-    const prefixedSelectors = selectors.map(sel => `${prefix}${combinator}${sel}`);
+    const prefixedSelectors = selectors.map(sel => {
+        if ( combinator == '' ) {
+          // an empty combinator indicates we want it to apply to this level
+          // we append the class if we want it to apply to the
+          // selection and not the parent
+          return `${sel}${prefix}`;
+        } else return `${prefix}${combinator}${sel}`);
+    });
     rule.selectorText = prefixedSelectors.join(', ');
   });
 }
