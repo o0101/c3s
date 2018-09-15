@@ -78,13 +78,14 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
     let newRuleText = lastRule.cssText;
     if ( lastRule.type == CSSRule.STYLE_RULE ) {
       const {selectorText} = lastRule;
-      const selectors = selectorText.split(/,/g);
+      const selectors = selectorText.split(/\s*,\s*/g);
       const modifiedSelectors = selectors.map(sel => {
         // we also need to insert prefix BEFORE any descendent combinators
         const firstDescendentIndex = sel.indexOf(' ');
         if ( firstDescendentIndex > -1 ) {
           const firstSel = sel.slice(0, firstDescendentIndex);
           const restSel = sel.slice(firstDescendentIndex);
+          console.log(firstSel,prefix,restSel);
           // we also need to insert prefix BEFORE any pseudo selectors 
             // NOTE: the following indexOf test will BREAK if selector contains a :
             // such as [ns\\:name="scoped-name"]
