@@ -1,24 +1,52 @@
 {
-  "name": "maskingtape.css",
-  "version": "1.0.3",
+  "_from": "maskingtape.css@1.0.3",
+  "_id": "maskingtape.css@1.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-fCi9Uua5YnYtkiIlME9r5Hz7aEMujgVdm8HLuouNJhBv0s9BqBlVfzRDuJESccNIafotU5fVJkqiW/OVkAlPjQ==",
+  "_location": "/maskingtape.css",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "maskingtape.css@1.0.3",
+    "name": "maskingtape.css",
+    "escapedName": "maskingtape.css",
+    "rawSpec": "1.0.3",
+    "saveSpec": null,
+    "fetchSpec": "1.0.3"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/maskingtape.css/-/maskingtape.css-1.0.3.tgz",
+  "_shasum": "f20b9cf0015d204552f20f5d6afd12fe26c79224",
+  "_spec": "maskingtape.css@1.0.3",
+  "_where": "/home/cris7fe/brutestrap",
+  "author": {
+    "name": "@dosy"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "jtype-system": "^1.0.4"
+  },
+  "deprecated": false,
   "description": "Block off where you want your styles to go. Scoped-styles, control the cascade, CSS-in-JS library.",
-  "main": "index.js",
-  "scripts": {
-    "test": "serve -p 8080"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com//crislin2046/c3s"
-  },
+  "devDependencies": {},
   "keywords": [
     "@dosy",
     "scoped-styles",
     "css-in-js"
   ],
-  "author": "@dosy",
   "license": "MIT",
-  "dependencies": {
-    "jtype-system": "^1.0.4"
+  "main": "index.js",
+  "name": "maskingtape.css",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com//crislin2046/c3s"
   },
-  "devDependencies": {}
+  "scripts": {
+    "test": "serve -p 8080"
+  },
+  "version": "1.0.3"
 }

@@ -46,7 +46,7 @@ export function isStyleSheetAccessible(ss) {
     Array.from(ss.cssRules);
     return true;
   } catch(e) {
-    console.warn(e);
+    console.info(e);
     return false;
   }
 }
@@ -69,8 +69,6 @@ export function addResetRules(ss) {
   });
 }
 
-// combinator can also be empty string ALL rules are to apply to component container
-// but generally this is no. 
 export function prefixAllrules(ss, prefix, combinator = ' ') {
   const ruleCount = ss.cssRules.length - 1;
   let i = ruleCount;
@@ -81,14 +79,7 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
     if ( lastRule.type == CSSRule.STYLE_RULE ) {
       const {selectorText} = lastRule;
       const selectors = selectorText.split(/,/g);
-      const modifiedSelectors = selectors.map(sel => {
-          if ( combinator == '' ) {
-            // an empty combinator indicates we want it to apply to this level
-            // we append the class if we want it to apply to the
-            // selection and not the parent
-            return `${sel}${prefix}`;
-          } else return `${prefix}${combinator}${sel}`;
-      });
+      const modifiedSelectors = selectors.map(sel => `${sel}${prefix}, ${prefix} ${sel}`);
       const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
       const newRuleSelectorText = modifiedSelectors.join(', ');
       newRuleText = `${newRuleSelectorText} ${ruleBlock}`;
@@ -98,9 +89,52 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
     i--;
   }
 }
+// The old prefix function (kept in case we need it in future)
+  // we are currently testing using both combinators
+  // to allow style sheets to be used as is
+  // whether we are scoping them to the children of the container that bears the prefix class
+  // or to the container itself
+  // since typicall style rules in a stylesheet might be written both with and without 
+  // a container prefix, and if we only use one type of combinator (direct or descendent)
+  // then rules written and intended to be usable via the other type of combinator 
+  // will not work
+  /**
+    // combinator can also be empty string ALL rules are to apply to component container
+    // but generally this is no. 
+    export function prefixAllrules(ss, prefix, combinator = ' ') {
+      const ruleCount = ss.cssRules.length - 1;
+      let i = ruleCount;
+
+      while(i >= 0) {
+        const lastRule = ss.cssRules[ruleCount];
+        let newRuleText = lastRule.cssText;
+        if ( lastRule.type == CSSRule.STYLE_RULE ) {
+          const {selectorText} = lastRule;
+          const selectors = selectorText.split(/,/g);
+          const modifiedSelectors = selectors.map(sel => {
+              if ( combinator == '' ) {
+                // an empty combinator indicates we want it to apply to this level
+                // we append the class if we want it to apply to the
+                // selection and not the parent
+                return `${sel}${prefix}`;
+              } else return `${prefix}${combinator}${sel}`;
+          });
+          const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
+          const newRuleSelectorText = modifiedSelectors.join(', ');
+          newRuleText = `${newRuleSelectorText} ${ruleBlock}`;
+        }
+        ss.deleteRule(ruleCount);
+        ss.insertRule(newRuleText);
+        i--;
+      }
+    }
+  **/
 
 export function scopeStyleSheet(url,prefix,combinator = ' ') {
   const ss = findStyleSheet(url);
+  if ( ! ss ) {
+    throw new TypeError(`Stylesheet with URI ${url} cannot be found.`);
+  }
   if ( !isStyleSheetAccessible(ss) ) {
     throw new TypeError(`Only CORS stylesheets can be scoped, because cross-origin rules cannot be accessed.`);
   }
