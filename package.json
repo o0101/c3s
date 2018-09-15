@@ -1,6 +1,6 @@
 {
   "name": "tape.css",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Block off where you want your styles to go. Scoped-styles, control the cascade, CSS-in-JS library.",
   "main": "index.js",
   "scripts": {
