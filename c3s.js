@@ -79,7 +79,16 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
     if ( lastRule.type == CSSRule.STYLE_RULE ) {
       const {selectorText} = lastRule;
       const selectors = selectorText.split(/,/g);
-      const modifiedSelectors = selectors.map(sel => `${sel}${prefix}, ${prefix} ${sel}`);
+      const modifiedSelectors = selectors.map(sel => {
+        // we also need to insert prefix BEFORE any pseudo selectors 
+          // NOTE: the following indexOf test will BREAK if selector contains a :
+          // such as [ns\\:name="scoped-name"]
+        const firstPseudoIndex = sel.indexOf(':');
+        if ( firstPseudoIndex > -1 ) {
+          const [pre, post] = [ sel.slice(0, firstPseudoIndex ), sel.slice(firstPseudoIndex) ];
+          return `${pre}${prefix}${post}, ${prefix} ${sel}`;
+        } else return `${sel}${prefix}, ${prefix} ${sel}`;
+      });
       const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
       const newRuleSelectorText = modifiedSelectors.join(', ');
       newRuleText = `${newRuleSelectorText} ${ruleBlock}`;
