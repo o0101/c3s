@@ -65,7 +65,14 @@ export function cloneStyleSheet(ss) {
 export function addResetRules(ss) {
   self.ss = ss;
   resetRules.forEach(rule => {
-    ss.insertRule(rule);
+    // we need a try catch since some rules, in some browsers, will throw, yet work in others
+    // this just relfects what CSS will pay attention to
+    // so we deal with that here by ignoring syntax-correct semantic errors, like CSS does
+    try {
+      ss.insertRule(rule);
+    } catch(e) {
+      console.info(e);
+    }
   });
 }
 
