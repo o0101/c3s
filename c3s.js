@@ -79,7 +79,7 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
           // we append the class if we want it to apply to the
           // selection and not the parent
           return `${sel}${prefix}`;
-        } else return `${prefix}${combinator}${sel}`);
+        } else return `${prefix}${combinator}${sel}`;
     });
     rule.selectorText = prefixedSelectors.join(', ');
   });
