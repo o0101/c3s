@@ -93,7 +93,7 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
       const newRuleSelectorText = modifiedSelectors.join(', ');
       newRuleText = `${newRuleSelectorText} ${ruleBlock}`;
     }
-    ss.removeRule(ruleCount);
+    ss.deleteRule(ruleCount);
     ss.insertRule(newRuleText);
     i--;
   }
