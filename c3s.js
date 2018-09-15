@@ -38,14 +38,15 @@ export function extendPrefix({prefix:existingPrefix}) {
 
 export function findStyleSheet(url) {
   url = getURL(url);
-  return [...document.styleSheets].find(({href}) => href == url);
+  return Array.from(document.styleSheets).find(({href}) => href == url);
 }
 
 export function isStyleSheetAccessible(ss) {
   try {
-    console.log(ss.cssRules);
+    Array.from(ss.cssRules);
     return true;
   } catch(e) {
+    console.warn(e);
     return false;
   }
 }
@@ -55,13 +56,14 @@ export function isStyleSheetAccessible(ss) {
 // which may both rely on and recause a network request
 export function cloneStyleSheet(ss) {
   const newNode = ss.ownerNode.cloneNode(true);
+  newNode.dataset.scoped = true;
   document.head.insertAdjacentElement('beforeEnd', newNode);
   ss.ownerNode.remove();
   return newNode;
 }
 
 export function addResetRules(ss) {
-  
+  self.ss = ss;
   resetRules.forEach(rule => {
     ss.insertRule(rule);
   });
@@ -70,8 +72,7 @@ export function addResetRules(ss) {
 // combinator can also be empty string ALL rules are to apply to component container
 // but generally this is no. 
 export function prefixAllrules(ss, prefix, combinator = ' ') {
-  console.log(ss);
-  [...ss.cssRules].forEach(rule => {
+  Array.from(ss.cssRules).forEach(rule => {
     const selectors = rule.selectorText.split(/,/g);
     const prefixedSelectors = selectors.map(sel => {
         if ( combinator == '' ) {
@@ -91,8 +92,10 @@ export function scopeStyleSheet(url,prefix,combinator = ' ') {
     throw new TypeError(`Only CORS stylesheets can be scoped, because cross-origin rules cannot be accessed.`);
   }
   const scopedSS = cloneStyleSheet(ss);
-  addResetRules(scopedSS.sheet);
-  prefixAllrules(scopedSS.sheet,prefix, combinator);
+  scopedSS.onload = () => {
+    addResetRules(scopedSS.sheet);
+    prefixAllrules(scopedSS.sheet,prefix, combinator);
+  };
   return scopedSS;
 }
 
