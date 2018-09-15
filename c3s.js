@@ -5,7 +5,7 @@ const PREFIX_LEN = 10 + LABEL_LEN;
 const PREFIX_BASE = 36;
 
 import {resetRules} from './resetRules.js';
-import {T} from '../jtype-system/t.js';
+import {T} from './externals.js';
 
 T.defCollection("Prefix", {
   container: T`Array`,
