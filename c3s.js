@@ -92,8 +92,14 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
           if ( firstPseudoIndex > -1 ) {
             const [pre, post] = [ firstSel.slice(0, firstPseudoIndex ), firstSel.slice(firstPseudoIndex) ];
             return `${pre}${prefix}${post}${restSel}, ${prefix} ${sel}`;
-          } else return `$${firstSel}${prefix}${restSel}, ${prefix} ${sel}`;
-        } else return `${sel}${prefix}, ${prefix} ${sel}`;
+          } else return `${firstSel}${prefix}${restSel}, ${prefix} ${sel}`;
+        } else {
+          const firstPseudoIndex = sel.indexOf(':');
+          if ( firstPseudoIndex > -1 ) {
+            const [pre, post] = [ sel.slice(0, firstPseudoIndex ), sel.slice(firstPseudoIndex) ];
+            return `${pre}${prefix}${post}, ${prefix} ${sel}`;
+          } else return `${sel}${prefix}, ${prefix} ${sel}`;
+        }
       });
       const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
       const newRuleSelectorText = modifiedSelectors.join(', ');
