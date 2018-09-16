@@ -4,7 +4,6 @@ const LABEL = FULL_LABEL.slice(0,LABEL_LEN);
 const PREFIX_LEN = 10 + LABEL_LEN;
 const PREFIX_BASE = 36;
 
-import {resetRules} from './resetRules.js';
 import {T} from './externals.js';
 
 T.defCollection("Prefix", {
@@ -60,20 +59,6 @@ export function cloneStyleSheet(ss) {
   document.head.insertAdjacentElement('beforeEnd', newNode);
   ss.ownerNode.remove();
   return newNode;
-}
-
-export function addResetRules(ss) {
-  self.ss = ss;
-  resetRules.forEach(rule => {
-    // we need a try catch since some rules, in some browsers, will throw, yet work in others
-    // this just relfects what CSS will pay attention to
-    // so we deal with that here by ignoring syntax-correct semantic errors, like CSS does
-    try {
-      ss.insertRule(rule);
-    } catch(e) {
-      console.info(e);
-    }
-  });
 }
 
 export function prefixAllrules(ss, prefix, combinator = ' ') {
@@ -168,7 +153,6 @@ export function scopeStyleSheet(url,prefix,combinator = ' ') {
   }
   const scopedSS = cloneStyleSheet(ss);
   scopedSS.onload = () => {
-    addResetRules(scopedSS.sheet);
     prefixAllrules(scopedSS.sheet,prefix, combinator);
   };
   return scopedSS;
