@@ -40,7 +40,7 @@ export function findStyleSheet(url) {
   const ssFound = Array.from(document.styleSheets).find(({href}) => href == url);
   if ( !ssFound ) {
     const qsFound = document.querySelector(`link[href="${url}"]`);
-    return qsFouNd && qsFound.sheet;
+    return qsFound && qsFound.sheet;
   } else return ssFound;
 }
 
