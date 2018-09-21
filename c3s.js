@@ -37,8 +37,11 @@ export function extendPrefix({prefix:existingPrefix}) {
 
 export function findStyleSheet(url) {
   url = getURL(url);
-  console.log(url);
-  return Array.from(document.styleSheets).find(({href}) => href == url);
+  const ssFound = Array.from(document.styleSheets).find(({href}) => href == url);
+  if ( !ssFound ) {
+    const qsFound = document.querySelector(`link[href="${url}"]`);
+    return qsFound;
+  } else return ssFound;
 }
 
 export function isStyleSheetAccessible(ss) {
