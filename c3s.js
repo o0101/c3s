@@ -40,13 +40,13 @@ export function findStyleSheet(url) {
   const ssFound = Array.from(document.styleSheets).find(({href}) => href == url);
   if ( !ssFound ) {
     const qsFound = document.querySelector(`link[href="${url}"]`);
-    return qsFound && qsFound.sheet;
-  } else return ssFound;
+    return qsFound && qsFound;
+  } else return ssFound.ownerNode;
 }
 
 export function isStyleSheetAccessible(ss) {
   try {
-    Array.from(ss.cssRules);
+    Array.from(ss.sheet.cssRules);
     return true;
   } catch(e) {
     console.info(e);
@@ -58,10 +58,10 @@ export function isStyleSheetAccessible(ss) {
 // a style element rather than cloning using the link 
 // which may both rely on and recause a network request
 export function cloneStyleSheet(ss) {
-  const newNode = ss.ownerNode.cloneNode(true);
+  const newNode = ss.cloneNode(true);
   newNode.dataset.scoped = true;
   document.head.insertAdjacentElement('beforeEnd', newNode);
-  ss.ownerNode.remove();
+  ss.remove();
   return newNode;
 }
 
