@@ -45,6 +45,7 @@ export function findStyleSheet(url) {
 }
 
 export function isStyleSheetAccessible(ss) {
+  console.log(ss);
   try {
     Array.from(ss.cssRules);
     return true;
@@ -158,7 +159,7 @@ export async function scopeStyleSheet(url,prefix,combinator = ' ') {
 
   if ( ! isKnownAccessible ) {
     return new Promise(res => {
-      ss.onload = () => {
+      ss.onload = () => setTimeout(() => {
         const isAccessible = isStyleSheetAccessible(ss);
         if ( ! isAccessible ) {
           throw new TypeError(`Non CORS sheet at ${url} cannot have its rules accessed so cannot be scoped.`);
@@ -168,7 +169,7 @@ export async function scopeStyleSheet(url,prefix,combinator = ' ') {
           prefixAllrules(scopedSS.sheet,prefix, combinator);
         };
         res(scopedSS);
-      }
+      }, 1000);
     });
   } else {
     const scopedSS = cloneStyleSheet(ss);
