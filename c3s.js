@@ -147,19 +147,36 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
     }
   **/
 
-export function scopeStyleSheet(url,prefix,combinator = ' ') {
+export async function scopeStyleSheet(url,prefix,combinator = ' ') {
   const ss = findStyleSheet(url);
+
   if ( ! ss ) {
     throw new TypeError(`Stylesheet with URI ${url} cannot be found.`);
   }
-  if ( !isStyleSheetAccessible(ss) ) {
-    throw new TypeError(`Only CORS stylesheets can be scoped, because cross-origin rules cannot be accessed.`);
+
+  const isKnownAccessible = isStyleSheetAccessible(ss);
+
+  if ( ! isKnownAccessible ) {
+    return new Promise(res => {
+      ss.onload = () => {
+        const isAccessible = isStyleSheetAccessible(ss);
+        if ( ! isAccessible ) {
+          throw new TypeError(`Non CORS sheet at ${url} cannot have its rules accessed so cannot be scoped.`);
+        }
+        const scopedSS = cloneStyleSheet(ss);
+        scopedSS.onload = () => {
+          prefixAllrules(scopedSS.sheet,prefix, combinator);
+        };
+        res(scopedSS);
+      }
+    });
+  } else {
+    const scopedSS = cloneStyleSheet(ss);
+    scopedSS.onload = () => {
+      prefixAllrules(scopedSS.sheet,prefix, combinator);
+    };
+    return scopedSS;
   }
-  const scopedSS = cloneStyleSheet(ss);
-  scopedSS.onload = () => {
-    prefixAllrules(scopedSS.sheet,prefix, combinator);
-  };
-  return scopedSS;
 }
 
 export function scope(url) {
