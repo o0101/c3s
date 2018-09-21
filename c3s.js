@@ -49,7 +49,6 @@ export function isStyleSheetAccessible(ss) {
     Array.from(ss.sheet.cssRules);
     return true;
   } catch(e) {
-    console.info(e);
     return false;
   }
 }
