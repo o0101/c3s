@@ -37,6 +37,7 @@ export function extendPrefix({prefix:existingPrefix}) {
 
 export function findStyleSheet(url) {
   url = getURL(url);
+  console.log(url);
   return Array.from(document.styleSheets).find(({href}) => href == url);
 }
 
