@@ -40,12 +40,11 @@ export function findStyleSheet(url) {
   const ssFound = Array.from(document.styleSheets).find(({href}) => href == url);
   if ( !ssFound ) {
     const qsFound = document.querySelector(`link[href="${url}"]`);
-    return qsFound;
+    return qsFouNd && qsFound.sheet;
   } else return ssFound;
 }
 
 export function isStyleSheetAccessible(ss) {
-  console.log(ss);
   try {
     Array.from(ss.cssRules);
     return true;
@@ -159,7 +158,7 @@ export async function scopeStyleSheet(url,prefix,combinator = ' ') {
 
   if ( ! isKnownAccessible ) {
     return new Promise(res => {
-      ss.onload = () => setTimeout(() => {
+      ss.onload = () => {
         const isAccessible = isStyleSheetAccessible(ss);
         if ( ! isAccessible ) {
           throw new TypeError(`Non CORS sheet at ${url} cannot have its rules accessed so cannot be scoped.`);
@@ -169,7 +168,7 @@ export async function scopeStyleSheet(url,prefix,combinator = ' ') {
           prefixAllrules(scopedSS.sheet,prefix, combinator);
         };
         res(scopedSS);
-      }, 1000);
+      };
     });
   } else {
     const scopedSS = cloneStyleSheet(ss);
