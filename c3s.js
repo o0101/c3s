@@ -64,7 +64,7 @@ export function cloneStyleSheet(ss) {
   return newNode;
 }
 
-export function prefixAllrules(ss, prefix, combinator = ' ') {
+export function prefixAllRules(ss, prefix, combinator = ' ') {
   const ruleCount = ss.cssRules.length - 1;
   let i = ruleCount;
 
@@ -117,7 +117,7 @@ export function prefixAllrules(ss, prefix, combinator = ' ') {
   /**
     // combinator can also be empty string ALL rules are to apply to component container
     // but generally this is no. 
-    export function prefixAllrules(ss, prefix, combinator = ' ') {
+    export function prefixAllRules(ss, prefix, combinator = ' ') {
       const ruleCount = ss.cssRules.length - 1;
       let i = ruleCount;
 
@@ -164,7 +164,7 @@ export async function scopeStyleSheet(url,prefix,combinator = ' ') {
         }
         const scopedSS = cloneStyleSheet(ss);
         scopedSS.onload = () => {
-          prefixAllrules(scopedSS.sheet,prefix, combinator);
+          prefixAllRules(scopedSS.sheet,prefix, combinator);
         };
         res(scopedSS);
       };
@@ -172,7 +172,7 @@ export async function scopeStyleSheet(url,prefix,combinator = ' ') {
   } else {
     const scopedSS = cloneStyleSheet(ss);
     scopedSS.onload = () => {
-      prefixAllrules(scopedSS.sheet,prefix, combinator);
+      prefixAllRules(scopedSS.sheet,prefix, combinator);
     };
     return scopedSS;
   }
@@ -189,7 +189,7 @@ export function scope(url) {
 export function rescope({scopedSheet, prefix:existingPrefix}) {
   const prefix = generateUniquePrefix().prefix[0];
   const combinator = '';
-  prefixAllrules(scopedSS,prefix,combinator);
+  prefixAllRules(scopedSS,prefix,combinator);
   return {scopedSheet: scopedSS, prefix: prefix + existingPrefix};
 }
 
