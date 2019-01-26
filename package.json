@@ -28,8 +28,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "jtype-system": "^1.0.4",
-    "normalize.css": "^8.0.0"
+    "jtype-system": "^1.0.4"
   },
   "deprecated": false,
   "description": "Block off where you want your styles to go. Scoped-styles, control the cascade, CSS-in-JS library.",
