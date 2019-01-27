@@ -4,3 +4,11 @@ input {
   color: purple;
   border: 3rem solid lime;
 }
+
+@media screen and (max-width: 600px) {
+  input {
+    font-size: 20pt;
+    background: red;
+    color: blue;
+  }
+}
