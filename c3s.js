@@ -101,14 +101,14 @@ function prefixStyleRule(lastRule, ss, lastRuleIndex, prefix, combinator) {
       const firstPseudoIndex = firstSel.indexOf(':');
       if ( firstPseudoIndex > -1 ) {
         const [pre, post] = [ firstSel.slice(0, firstPseudoIndex ), firstSel.slice(firstPseudoIndex) ];
-        return `${pre}${prefix}${post}${restSel}, ${prefix} ${sel}`;
-      } else return `${firstSel}${prefix}${restSel}, ${prefix} ${sel}`;
+        return `${pre}${prefix}${post}${restSel}` + (combinator == '' ? '' : `, ${prefix}${combinator}${sel}`);
+      } else return `${firstSel}${prefix}${restSel}` + (combinator == '' ? '' : `, ${prefix}${combinator}${sel}`);
     } else {
       const firstPseudoIndex = sel.indexOf(':');
       if ( firstPseudoIndex > -1 ) {
         const [pre, post] = [ sel.slice(0, firstPseudoIndex ), sel.slice(firstPseudoIndex) ];
-        return `${pre}${prefix}${post}, ${prefix} ${sel}`;
-      } else return `${sel}${prefix}, ${prefix} ${sel}`;
+        return `${pre}${prefix}${post}` + (combinator == '' ? '' : `, ${prefix}${combinator}${sel}`);
+      } else return `${sel}${prefix}` + (combinator == '' ? '' : `, ${prefix}${combinator}${sel}`);
     }
   });
   const ruleBlock = newRuleText.slice(newRuleText.indexOf('{'));
