@@ -1,4 +1,4 @@
-# maskingtape.css (1.1.0)
+# maskingtape.css (1.1.0) ![npm](https://img.shields.io/npm/dt/maskingtape.css)
 
 Block off where you want your styles to apply. Control the drips, er... I mean, the cascade.
 
